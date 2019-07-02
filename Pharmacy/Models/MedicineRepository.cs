@@ -14,8 +14,7 @@ namespace Pharmacy.Models
         }
 
         public IEnumerable<Medicine> GetAllMedicines()
-        {
-            AddMedicine(new Medicine { Name = "Nazwa testowa", Manufacturer = "Producent testowy", Price = 15, Amount = 10, WithPrescription = false });
+        {         
             return _appDbContext.Medicines;
         }
 
