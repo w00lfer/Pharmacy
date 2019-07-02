@@ -1,0 +1,23 @@
+﻿@model IEnumerable<Medicine>
+
+@foreach (var medicine in Model)
+{
+    <div class="col-sm-4 col-lg-4 col-md-4">
+        <div class="thumbnail">
+            <div class="caption">
+                <h3 class="pull-right">@medicine.Price.ToString("c")</h3>
+                <h4>
+                    nazwa : @medicine.Name
+                </h4>
+                <h4>
+                    producent : @medicine.Manufacturer
+                </h4>
+                <h4>
+                    ilosc : @medicine.Amount
+                </h4>
+                <p>@medicine.WithPrescription</p>
+            </div>
+        </div>
+    </div>
+}
+
