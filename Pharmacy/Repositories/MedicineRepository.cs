@@ -1,27 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Pharmacy.Models;
+using Pharmacy.Repositories.Interfaces;
 
-namespace Pharmacy.Models
+namespace Pharmacy.Repositories
 {
     public class MedicineRepository : IMedicineRepository
     {
         private readonly AppDbContext _appDbContext;
-        public MedicineRepository(AppDbContext appDbContext)
-        {
-            _appDbContext = appDbContext;
-        }
+        public MedicineRepository(AppDbContext appDbContext) => _appDbContext = appDbContext;
 
-        public IEnumerable<Medicine> GetAllMedicines()
-        {         
-            return _appDbContext.Medicines;
-        }
+        public IEnumerable<Medicine> GetAllMedicines() => _appDbContext.Medicines.ToList();
 
-        public Medicine GetMedicineById(int medicineId)
-        {
-            return _appDbContext.Medicines.FirstOrDefault(m => m.Id == medicineId);
-        }
+        public Medicine GetMedicineById(int medicineId) => _appDbContext.Medicines.FirstOrDefault(m => m.Id == medicineId);
 
         public void AddMedicine(Medicine medicine)
         {

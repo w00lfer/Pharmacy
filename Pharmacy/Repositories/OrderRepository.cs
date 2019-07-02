@@ -1,28 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Pharmacy.Models;
 
-namespace Pharmacy.Models
+namespace Pharmacy.Repositories
 {
     public class OrderRepository : IOrderRepository
     {
         private readonly AppDbContext _appDbContext;
 
-        public OrderRepository(AppDbContext appDbContext)
-        {
-            _appDbContext = appDbContext;
-        }
+        public OrderRepository(AppDbContext appDbContext) => _appDbContext = appDbContext;
 
-        public IEnumerable<Order> GetAllOrders()
-        {
-            return _appDbContext.Orders;
-        }
+        public IEnumerable<Order> GetAllOrders() => _appDbContext.Orders;
 
-        public Order GetOrderById(int orderId)
-        {
-            return _appDbContext.Orders.FirstOrDefault(o => o.Id == orderId);
-        }
+        public Order GetOrderById(int orderId) => _appDbContext.Orders.FirstOrDefault(o => o.Id == orderId);
 
         public void AddOrder(Order order)
         {

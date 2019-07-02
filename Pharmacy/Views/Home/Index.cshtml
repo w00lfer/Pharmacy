@@ -1,19 +1,19 @@
-﻿@model IEnumerable<Medicine>
+﻿@model IEnumerable<Pharmacy.Models.Medicine>
 
 @foreach (var medicine in Model)
 {
     <div class="col-sm-4 col-lg-4 col-md-4">
         <div class="thumbnail">
             <div class="caption">
-                <h3 class="pull-right">@medicine.Price.ToString("c")</h3>
+                <h3 class="pull-right">@Html.Raw(medicine.Price.ToString("c"))</h3>
                 <h4>
-                    nazwa : @medicine.Name
+                    @Html.DisplayNameFor(model => model.Name) : @Html.Raw(medicine.Name)
                 </h4>
                 <h4>
-                    producent : @medicine.Manufacturer
+                    @Html.DisplayNameFor(model => model.Manufacturer) : @Html.Raw(medicine.Manufacturer)
                 </h4>
                 <h4>
-                    ilosc : @medicine.Amount
+                    @Html.DisplayNameFor(model => model.Amount) : @Html.Raw(medicine.Amount)
                 </h4>
                 <p>@medicine.WithPrescription</p>
             </div>
