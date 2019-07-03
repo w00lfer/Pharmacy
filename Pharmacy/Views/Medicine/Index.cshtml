@@ -1,0 +1,35 @@
+﻿@using Pharmacy.Models
+@model IEnumerable<Pharmacy.Models.Medicine>
+
+
+    <table class="table" style="background-color: azure">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Manufacturer</th>
+            <th>Amount</th>
+            <th>With prescription?</th>
+            <th>Price</th>
+            <th>
+                <a asp-action="Create" class="btn btn-danger btn-sm">Add new medicine</a>
+            </th>
+        </tr>
+        </thead>
+    <tbody>
+    @foreach (var medicine in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(model => medicine.Name)</td>
+            <td>@Html.DisplayFor(model => medicine.Manufacturer)</td>
+            <td>@Html.DisplayFor(model => medicine.Amount)</td>
+            <td>@medicine.WithPrescription</td>
+            <td>@Html.Raw(medicine.Price.ToString("c"))</td>
+            <td>
+                <a>Edit</a>
+                <a>Delete</a>
+            </td>
+                
+        </tr>
+    }
+    </tbody>
+    </table>

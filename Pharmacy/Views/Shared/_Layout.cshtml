@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width"/>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>
+    <link href="~/content/site.css" rel="stylesheet"/>
+
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a asp-controller="Home" asp-action="Index" class="navbar-brand">
+                        <img src="~/images/LogoIcon.png" title="logo" style="max-height: 30px" />
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="Medicine" asp-action="Index" class="navbar-brand">Medicines</a>
+                </li>
+                <li>
+                    <a asp-controller="Prescription" asp-action="Index" class="navbar-brand">Prescriptions</a>
+                </li>
+                <li>
+                    <a asp-controller="Order" asp-action="Index" class="navbar-brand">Orders</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container body-content">
+    <div class="row">
+        @RenderBody()
+    </div>
+</div>
+</body>
+</html>

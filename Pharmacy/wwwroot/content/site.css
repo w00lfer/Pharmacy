@@ -1,0 +1,15 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+    background-color:paleturquoise
+}
+
+.body-content{
+    margin-top: 50px;
+    padding: 20px 10px 0 10px;
+}
+
+.navbar-brand {
+    max-height: 100%;
+    width: auto;
+}
