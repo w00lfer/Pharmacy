@@ -11,7 +11,7 @@
                 <h4>@Model.WithPrescription</h4>
                 <h2>Are you sure to delete this medicine?</h2>
                 <h4 class="pull-right">
-                    <form asp-action="Delete">
+                    <form asp-action="Delete" asp-route-medicineId="@Model.Id">
                         <input type="hidden" asp-for="Id"/>
                         <input type="submit" value="Delete" class="btn btn-success"/>
                         <a asp-action="Index" class="btn btn-success">Back</a>

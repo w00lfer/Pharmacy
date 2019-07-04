@@ -6,5 +6,6 @@
         public string CustomerName { get; set; }
         public int Pesel { get; set; }
         public int PrescriptionNumber { get; set; }
+        public int MedicineId { get; set; }
     }
 }
