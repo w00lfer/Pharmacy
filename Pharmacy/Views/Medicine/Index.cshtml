@@ -25,8 +25,8 @@
             <td>@medicine.WithPrescription</td>
             <td>@Html.Raw(medicine.Price.ToString("c"))</td>
             <td>
-                <a>Edit</a>
-                <a>Delete</a>
+                <a asp-action="Edit" asp-route-medicineId="@medicine.Id">Edit</a>
+                <a >Delete</a>
             </td>
                 
         </tr>

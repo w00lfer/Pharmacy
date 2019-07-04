@@ -25,6 +25,7 @@ namespace Pharmacy.Controllers
         public IActionResult Create() => View();
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Create(Medicine medicine)
         {
             if (ModelState.IsValid)
@@ -32,7 +33,29 @@ namespace Pharmacy.Controllers
                 _medicineRepository.AddMedicine(medicine);
                 return RedirectToAction(nameof(Index));
             }
+            return View(medicine);
+        }
 
+        [HttpGet]
+        public IActionResult Edit(int medicineId)
+        {
+            var medicine = _medicineRepository.GetMedicineById(medicineId);
+            if (medicine == null)
+            {
+                return NotFound();
+            }
+            return View(medicine);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(Medicine medicine)
+        {
+            if (ModelState.IsValid)
+            {
+                _medicineRepository.EditMedicine(medicine);
+                return RedirectToAction(nameof(Index));
+            }
             return View(medicine);
         }
     }
