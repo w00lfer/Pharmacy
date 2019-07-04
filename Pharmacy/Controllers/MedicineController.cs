@@ -37,15 +37,10 @@ namespace Pharmacy.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit(int medicineId)
-        {
-            var medicine = _medicineRepository.GetMedicineById(medicineId);
-            if (medicine == null)
-            {
-                return NotFound();
-            }
-            return View(medicine);
-        }
+        public IActionResult Edit(int medicineId) =>
+            _medicineRepository.GetMedicineById(medicineId) is var medicine == null
+                ? (IActionResult) NotFound()
+                : View(medicine);
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -58,5 +53,21 @@ namespace Pharmacy.Controllers
             }
             return View(medicine);
         }
+
+        [HttpGet]
+        public IActionResult Delete(int medicineId) =>
+            _medicineRepository.GetMedicineById(medicineId) is var medicine == null
+                ? (IActionResult) NotFound()
+                : View(medicine);
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int medicineId)
+        {
+            var medicine = _medicineRepository.GetMedicineById(medicineId);
+            _medicineRepository.DeleteMedicine(medicine);
+            return RedirectToAction(nameof(Index));
+        }
     }
+
 }

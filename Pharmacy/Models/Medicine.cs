@@ -5,7 +5,6 @@ namespace Pharmacy.Models
 {
     public class Medicine
     {
-        [BindNever]
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Medicine's name is required")]

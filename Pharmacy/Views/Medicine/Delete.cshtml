@@ -1,0 +1,23 @@
+﻿@model Pharmacy.Models.Medicine
+
+<div>
+    <div class="thumbnail">
+        <div class="row">
+            <div class="col-md-12">
+                <h3>@Model.Name</h3>
+                <h4>@Model.Manufacturer</h4>
+                <h4>@Model.Amount</h4>
+                <h4>@Model.Price</h4>
+                <h4>@Model.WithPrescription</h4>
+                <h2>Are you sure to delete this medicine?</h2>
+                <h4 class="pull-right">
+                    <form asp-action="Delete">
+                        <input type="hidden" asp-for="Id"/>
+                        <input type="submit" value="Delete" class="btn btn-success"/>
+                        <a asp-action="Index" class="btn btn-success">Back</a>
+                    </form>
+                </h4>
+            </div>
+        </div>
+    </div>
+</div>
