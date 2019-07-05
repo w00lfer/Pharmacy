@@ -13,6 +13,8 @@ namespace Pharmacy.Models
 
         [Required(ErrorMessage = "Pesel name is required")]
         [Display(Name = "Pesel")]
+        [MaxLength(11, ErrorMessage = "Pesel is to long")]
+        [MinLength(11, ErrorMessage = " Pesel is too short")]
         public long Pesel { get; set; }
 
         [Required(ErrorMessage = "Prescription number is required")]
