@@ -21,6 +21,8 @@ namespace Pharmacy
             services.AddScoped<IMedicineRepository, MedicineRepository>();
             services.AddScoped<IPrescriptionRepository, PrescriptionRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddMemoryCache();
+            services.AddSession();
             services.AddMvc();
         }
 
@@ -31,6 +33,7 @@ namespace Pharmacy
             app.UseStatusCodePages();
             app.UseStaticFiles();
             app.UseAuthentication();
+            app.UseSession();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

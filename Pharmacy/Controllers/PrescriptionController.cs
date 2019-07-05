@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Pharmacy.Extensions;
 using Pharmacy.Models;
 using Pharmacy.Repositories.Interfaces;
 using Pharmacy.ViewModels;
@@ -25,9 +23,9 @@ namespace Pharmacy.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            if (_prescriptionRepository.GetAllPrescriptions() == null)
+            if (_prescriptionRepository.GetAllPrescriptions() is null)
             {
-                
+
             }
             return View(_prescriptionRepository.GetAllPrescriptions().OrderBy(p => p.Id));
         }
@@ -35,10 +33,13 @@ namespace Pharmacy.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            var medicines = _medicineRepository.GetMedicinesWithPrescription()
-                .Select(p => new {Id = p.Id, Value = p.Name}).ToList();
-            var model = new PrescriptionViewModel();
-            model.MedicinesWithPrescription = new SelectList(medicines, "Id", "Value");
+            var model = new PrescriptionViewModel
+            {
+                MedicinesWithPrescription = new SelectList(_medicineRepository.GetMedicinesWithPrescription()
+                    .Select(p => new DataTransfer{Id =  p.Id, Value = p.Name }).ToList(), nameof(DataTransfer.Id) , nameof(DataTransfer.Value))
+            };
+            TempData.Set("MedicinesWithPrescription", _medicineRepository.GetMedicinesWithPrescription()
+                .Select(p => new DataTransfer{Id = p.Id, Value = p.Name}).ToList());
             return View(model);
         }
 
@@ -48,8 +49,12 @@ namespace Pharmacy.Controllers
             if (ModelState.IsValid)
             {
                 _prescriptionRepository.AddPrescription(prescriptionViewModel.prescription);
+                TempData.Remove("MedicinesWithPrescription");
                 return RedirectToAction(nameof(Index));
             }
+
+            prescriptionViewModel.MedicinesWithPrescription =
+                new SelectList(TempData.Get<List<DataTransfer>>("MedicinesWithPrescription"), nameof(DataTransfer.Id), nameof(DataTransfer.Value));
 
             return View(prescriptionViewModel);
         }
