@@ -38,6 +38,7 @@ namespace Pharmacy.Controllers
                 MedicinesWithPrescription = new SelectList(_medicineRepository.GetMedicinesWithPrescription()
                     .Select(p => new DataTransfer{Id =  p.Id, Value = p.Name }).ToList(), nameof(DataTransfer.Id) , nameof(DataTransfer.Value))
             };
+            TempData.Clear();
             TempData.Set("MedicinesWithPrescription", _medicineRepository.GetMedicinesWithPrescription()
                 .Select(p => new DataTransfer{Id = p.Id, Value = p.Name}).ToList());
             return View(model);
