@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Pharmacy.Models;
 
 namespace Pharmacy.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190705083208_PrescriptionModelAddMedicineIdProp")]
+    partial class PrescriptionModelAddMedicineIdProp
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -69,15 +71,13 @@ namespace Pharmacy.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("CustomerName")
-                        .IsRequired()
-                        .HasMaxLength(100);
+                    b.Property<string>("CustomerName");
 
                     b.Property<int>("MedicineId");
 
-                    b.Property<long>("Pesel");
+                    b.Property<int>("Pesel");
 
-                    b.Property<long>("PrescriptionNumber");
+                    b.Property<int>("PrescriptionNumber");
 
                     b.HasKey("Id");
 

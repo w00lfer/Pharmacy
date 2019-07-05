@@ -1,0 +1,21 @@
+﻿@model Pharmacy.Models.Prescription
+
+<div>
+    <div class="thumbnail">
+        <div class="row">
+            <div class="col-md-12">
+                <h3>@Model.CustomerName</h3>
+                <h4>@Model.Pesel</h4>
+                <h4>@Model.PrescriptionNumber</h4>
+                <h2>Are you sure to delete this prescription?</h2>
+                <h4 class="pull-right">
+                    <form asp-action="Delete" asp-route-prescriptionId="@Model.Id">
+                        <input type="hidden" asp-for="Id" />
+                        <input type="submit" value="Delete" class="btn btn-success" />
+                        <a asp-action="Index" class="btn btn-success">Back</a>
+                    </form>
+                </h4>
+            </div>
+        </div>
+    </div>
+</div>

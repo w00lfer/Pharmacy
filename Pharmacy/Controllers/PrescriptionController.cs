@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Pharmacy.Models;
 using Pharmacy.Repositories.Interfaces;
 using Pharmacy.ViewModels;
@@ -27,24 +29,44 @@ namespace Pharmacy.Controllers
             {
                 
             }
-            return View(new PrescriptionVM
-            {
-                MedicinesWithPrescription = _medicineRepository.GetAllMedicines().Where( m => m.WithPrescription == true),
-                Prescription =
-            });
+            return View(_prescriptionRepository.GetAllPrescriptions().OrderBy(p => p.Id));
         }
 
         [HttpGet]
-        public IActionResult Create() => View();
+        public IActionResult Create()
+        {
+            var medicines = _medicineRepository.GetMedicinesWithPrescription()
+                .Select(p => new {Id = p.Id, Value = p.Name}).ToList();
+            var model = new PrescriptionViewModel();
+            model.MedicinesWithPrescription = new SelectList(medicines, "Id", "Value");
+            return View(model);
+        }
 
         [HttpPost]
-        public IActionResult Create(Prescription prescription)
+        public IActionResult Create(PrescriptionViewModel prescriptionViewModel)
         {
             if (ModelState.IsValid)
             {
-                _prescriptionRepository.AddPrescription(prescription);
+                _prescriptionRepository.AddPrescription(prescriptionViewModel.prescription);
+                return RedirectToAction(nameof(Index));
             }
-            return View(prescription)
+
+            return View(prescriptionViewModel);
+        }
+
+        [HttpGet]
+        public IActionResult Delete(int prescriptionId) =>
+            _prescriptionRepository.GetPrescriptionById(prescriptionId) is var prescription == null
+                ? (IActionResult)NotFound()
+                : View(prescription);
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int prescriptionId)
+        {
+            var prescription = _prescriptionRepository.GetPrescriptionById(prescriptionId);
+            _prescriptionRepository.DeletePrescription(prescription);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

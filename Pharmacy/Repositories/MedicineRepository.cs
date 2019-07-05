@@ -12,6 +12,8 @@ namespace Pharmacy.Repositories
 
         public IEnumerable<Medicine> GetAllMedicines() => _appDbContext.Medicines.ToList();
 
+        public IQueryable<Medicine> GetMedicinesWithPrescription() => _appDbContext.Medicines.Where( m => m.WithPrescription == true);
+
         public Medicine GetMedicineById(int medicineId) => _appDbContext.Medicines.FirstOrDefault(m => m.Id == medicineId);
 
         public void AddMedicine(Medicine medicine)
