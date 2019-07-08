@@ -33,31 +33,31 @@ namespace Pharmacy.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            var model = new PrescriptionViewModel
+            var model = new PrescriptionCreateViewModel
             {
                 MedicinesWithPrescription = new SelectList(_medicineRepository.GetMedicinesWithPrescription()
-                    .Select(p => new DataTransfer{Id =  p.Id, Value = p.Name }).ToList(), nameof(DataTransfer.Id) , nameof(DataTransfer.Value))
+                    .Select(p => new DataTransferForPrescriptionCreate{MedicineId =  p.Id, MedicineName = p.Name }).ToList(), nameof(DataTransferForPrescriptionCreate.MedicineId) , nameof(DataTransferForPrescriptionCreate.MedicineName))
             };
             TempData.Clear();
             TempData.Set("MedicinesWithPrescription", _medicineRepository.GetMedicinesWithPrescription()
-                .Select(p => new DataTransfer{Id = p.Id, Value = p.Name}).ToList());
+                .Select(p => new DataTransferForPrescriptionCreate{MedicineId = p.Id, MedicineName = p.Name}).ToList());
             return View(model);
         }
 
         [HttpPost]
-        public IActionResult Create(PrescriptionViewModel prescriptionViewModel)
+        public IActionResult Create(PrescriptionCreateViewModel prescriptionCreateViewModel)
         {
             if (ModelState.IsValid)
             {
-                _prescriptionRepository.AddPrescription(prescriptionViewModel.prescription);
+                _prescriptionRepository.AddPrescription(prescriptionCreateViewModel.prescription);
                 TempData.Remove("MedicinesWithPrescription");
                 return RedirectToAction(nameof(Index));
             }
 
-            prescriptionViewModel.MedicinesWithPrescription =
-                new SelectList(TempData.Get<List<DataTransfer>>("MedicinesWithPrescription"), nameof(DataTransfer.Id), nameof(DataTransfer.Value));
+            prescriptionCreateViewModel.MedicinesWithPrescription =
+                new SelectList(TempData.Get<List<DataTransferForPrescriptionCreate>>("MedicinesWithPrescription"), nameof(DataTransferForPrescriptionCreate.MedicineId), nameof(DataTransferForPrescriptionCreate.MedicineName));
 
-            return View(prescriptionViewModel);
+            return View(prescriptionCreateViewModel);
         }
 
         [HttpGet]

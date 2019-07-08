@@ -19,7 +19,7 @@ namespace Pharmacy.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index() => View(_medicineRepository.GetAllMedicines().OrderBy(m => m.Name));
+        public IActionResult Index() => View(_medicineRepository.GetAllMedicines().OrderBy(m => m.Id));
 
         [HttpGet]
         public IActionResult Create() => View();

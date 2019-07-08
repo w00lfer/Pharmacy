@@ -1,6 +1,9 @@
-﻿<p>What would you like to do?</p>
-<div class="list-group">
-    <a asp-controller="Medicine" asp-action="Index" class="list-group-item"> Medicines </a>
-    <a asp-controller="Prescription" asp-action="Index" class="list-group-item"> Prescriptions </a>
-    <a asp-controller="Order" asp-action="Index" class="list-group-item"> Orders </a>
+﻿<div>
+    <h1>Pharmacy</h1>
+    <h2>What would you like to do?</h2>
+    <div class="list-group col-md-6">
+        <a asp-controller="Medicine" asp-action="Index" class="list-group-item">Check list of medicines, add, edit or delete medicine </a>
+        <a asp-controller="Prescription" asp-action="Index" class="list-group-item"> Check list of prescriptions, add or delete prescription </a>
+        <a asp-controller="Order" asp-action="Index" class="list-group-item"> Check list of orders or place an order </a>
+    </div>
 </div>

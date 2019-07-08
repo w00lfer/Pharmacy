@@ -9,7 +9,7 @@ using Pharmacy.Models;
 
 namespace Pharmacy.ViewModels
 {
-    public class PrescriptionViewModel
+    public class PrescriptionCreateViewModel
     {
         public Prescription prescription { get; set; }
         public int  MedicineWithPrescriptionId { get; set; }

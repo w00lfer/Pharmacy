@@ -1,7 +1,43 @@
-﻿
-@{
-    ViewData["Title"] = "Index";
-}
+﻿@model IEnumerable<Pharmacy.ViewModels.OrderIndexViewModel>
 
-<h2>Order</h2>
+<div class="pull-left">
+    <h2>Orders</h2>
+</div>
+<table class="table" style="background-color: azure">
+    <thead>
+    <tr>
+        <th>Date</th>
+        <th>Medicine</th>
+        <th>Amount</th>
+        <th>Price</th>
+        <th>Prescription Number</th>
+        <th>
+            <a asp-action="" class="btn btn-danger btn-sm">Add new medicine</a>
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var order in Model)
+    {
+        <tr>
+            <td>@Html.Raw(order.Order.Date.ToShortDateString())</td>
+            <td>@Html.DisplayFor(model => order.MedicineName)</td>
+            <td>@Html.DisplayFor(model => order.Order.Amount)</td>
+            <td>@Html.Raw(order.Order.OrderCost.ToString("c"))</td>
+            @if (order.PrescriptionNumber != null)
+            {
+                <td>@Html.DisplayFor(model => order.PrescriptionNumber)</td>
+            }
+            else
+            {
+                <td></td>
+            }
+            <td>
+                <a asp-action="" asp-route-medicineMedicineId="">Edit</a>
+                <a asp-action="" asp-route-medicineMedicineId="">Delete</a>
+            </td>
 
+        </tr>
+    }
+    </tbody>
+</table>

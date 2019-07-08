@@ -10,8 +10,8 @@ using Pharmacy.Models;
 namespace Pharmacy.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20190705135039_ModelsUpdate3")]
-    partial class ModelsUpdate3
+    [Migration("20190708111155_OrderModelUpdate")]
+    partial class OrderModelUpdate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -57,6 +57,8 @@ namespace Pharmacy.Migrations
                     b.Property<DateTime>("Date");
 
                     b.Property<int>("MedicineId");
+
+                    b.Property<double>("OrderCost");
 
                     b.Property<int>("PrescriptionId");
 

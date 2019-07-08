@@ -23,7 +23,7 @@ namespace Pharmacy.Migrations
 
             modelBuilder.Entity("Pharmacy.Models.Medicine", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("MedicineId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -37,14 +37,14 @@ namespace Pharmacy.Migrations
 
                     b.Property<bool>("WithPrescription");
 
-                    b.HasKey("Id");
+                    b.HasKey("MedicineId");
 
                     b.ToTable("Medicines");
                 });
 
             modelBuilder.Entity("Pharmacy.Models.Order", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("MedicineId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -56,14 +56,14 @@ namespace Pharmacy.Migrations
 
                     b.Property<int>("PrescriptionId");
 
-                    b.HasKey("Id");
+                    b.HasKey("MedicineId");
 
                     b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("Pharmacy.Models.Prescription", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("MedicineId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -73,7 +73,7 @@ namespace Pharmacy.Migrations
 
                     b.Property<int>("PrescriptionNumber");
 
-                    b.HasKey("Id");
+                    b.HasKey("MedicineId");
 
                     b.ToTable("Prescriptions");
                 });
