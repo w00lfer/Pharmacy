@@ -1,0 +1,74 @@
+﻿@model Pharmacy.Models.Order
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetMedicines", "Order")',
+            success: function(data) {
+                var s = '<option value="-1">Please Select a medicine</option>';
+                for (var i = 0; i < data.length; i++) {
+                    s += `<option value="${data[i].medicineId}">${data[i].medicineName}</option>`;
+                }
+                $("#medicinesDropdown").html(s);
+               
+            }
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $("#medicinesDropdown").change(function () {
+            $(document).ready(function () {
+                $.ajax({
+                    type: "GET",
+                    url: "/Order/GetPrescriptionsForMedicine?medicineId=" + $("#medicinesDropdown option:selected").val(),
+                    success: function (data) {
+                        var s = '<option value="-1">Please Select a prescription</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            s += '<option value="' + data[i].prescriptionId + '">' + data[i].prescriptionNumber + '</option>';
+                        }
+                        $("#prescriptionsDropdown").html(s);
+                    }
+                });
+            });
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $("#submitButton").click(function() {
+            $("#medicinesDropdownValue").val($("#medicinesDropdown option:selected").val());
+            $("#prescriptionsDropdownValue").val($("#prescriptionsDropdown option:selected").val());
+        });
+    });
+</script>
+
+<h2>Place an order</h2>
+<hr/>
+<div class="thumbnail col-md-offset-3 col-md-6 row">
+    <form asp-action="Create" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label for="medicinesDropdown" class="control-label"><b>Medicines</b></label>
+            <select class="form-control" asp-for="MedicineId" id="medicinesDropdown"></select>
+            <input type="hidden" asp-for="MedicineId" id="medicinesDropdownValue"/>
+            <span asp-validation-for="MedicineId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="prescriptionsDropdown" class="control-label"><b>Prescriptions</b></label>
+            <select class="form-control" asp-for="PrescriptionId" id="prescriptionsDropdown" name="prescriptionsDropdown"></select>
+            <input type="hidden" asp-for="PrescriptionId" id="prescriptionsDropdownValue"/>
+            <span asp-validation-for="PrescriptionId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Amount</label>
+            <input class="form-control" asp-for="Amount"/>
+            <span asp-validation-for="Amount" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Add order" class="btn btn-success mt-30 pull-right" id="submitButton"/>
+            <a asp-action="Index" class="btn btn-danger mt-30">Back</a>
+        </div>
+    </form>
+    </div>

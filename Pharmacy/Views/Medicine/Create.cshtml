@@ -2,11 +2,10 @@
 
 <h2>Add a medicine</h2>
 <hr/>
-<div class="row">
+<div class="thumbnail col-md-offset-3 col-md-6">
     <form asp-action="Create">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="col-md-4">
-            <div class="form-group">
+        <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
@@ -35,10 +34,9 @@
                 </div>
             </div>
             <div class="form-group">
-                <input type="submit" value="Add medicine" class="btn btn-success" style="margin-top:30px" />
-                <a asp-action="Index" class="btn btn-danger pull-right" style="margin-top:30px">Back</a>
+                <input type="submit" value="Add medicine" class="btn btn-success mt-30 pull-right" />
+                <a asp-action="Index" class="btn btn-danger mt-30">Back</a>
             </div>
-        </div>
     </form>
 </div>
 

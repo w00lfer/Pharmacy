@@ -29,47 +29,38 @@ namespace Pharmacy.Controllers
         public IActionResult Index()
         {
             var orders = _orderRepository.GetAllOrders().OrderBy(o => o.Date);
-            List <OrderIndexViewModel> orderViewModels  = new List<OrderIndexViewModel>();
-            foreach (var order in orders)
-            {
-                if (_medicineRepository.GetMedicineById(order.MedicineId).WithPrescription == true)
+            var orderViewModels  = orders.Select(order => 
+                new OrderIndexViewModel
                 {
-                    orderViewModels.Add(new OrderIndexViewModel
-                        {
-                            Order = order,
-                            MedicineName = _medicineRepository.GetMedicineById(order.MedicineId).Name,
-                            PrescriptionNumber = _prescriptionRepository.GetPrescriptionById(order.PrescriptionId).PrescriptionNumber
-                        }
-                    );
-                }
-                else
-                {
-                    orderViewModels.Add(new OrderIndexViewModel
-                    {
-                        Order = order,
-                        MedicineName = _medicineRepository.GetMedicineById(order.MedicineId).Name,
-                        PrescriptionNumber = null
-                    });
-                }
-            }
+                    Order = order,
+                    MedicineName = _medicineRepository.GetMedicineById(order.MedicineId).Name,
+                    PrescriptionNumber = _medicineRepository.GetMedicineById(order.MedicineId).WithPrescription ? _prescriptionRepository.GetPrescriptionById(order.PrescriptionId)?.PrescriptionNumber : default
+                }).ToList();
 
             return View(orderViewModels);
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public IActionResult Create() => View();
+
+        [HttpPost]
+        public IActionResult Create(Order order)
         {
-            var model = new OrderCreateViewModel()
+            if (ModelState.IsValid)
             {
-                AllMedicines = new SelectList(_medicineRepository.GetAllMedicines()
-                    .Select(p => new DataTransferForPrescriptionCreate { MedicineId = p.Id, MedicineName = p.Name }).ToList(), nameof(DataTransferForPrescriptionCreate.MedicineId), nameof(DataTransferForPrescriptionCreate.MedicineName)),
-                ListOfPrescriptions = _prescriptionRepository.GetPrescriptionsNumbers()
-            };
-            TempData.Clear();
-            TempData.Set("AllMedicines", _medicineRepository.GetAllMedicines()
-                .Select(p => new DataTransferForPrescriptionCreate { MedicineId = p.Id, MedicineName = p.Name }).ToList());
-            return View(model);
+                order.Date = DateTime.UtcNow;
+                order.OrderCost = _medicineRepository.GetMedicineById(order.MedicineId).Price * order.Amount;
+                _orderRepository.AddOrder(order);
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(order);
         }
+
+        public ActionResult GetMedicines() => Json(_medicineRepository.GetAllMedicines().Select(m => new {MedicineId = m.Id, MedicineName = m.Name}).ToList());
+
+
+        public ActionResult GetPrescriptionsForMedicine(int medicineId) => Json(_prescriptionRepository.GetPrescriptionsForMedicine(medicineId).Select(p => new {PrescriptionId = p.Id, PrescriptionNumber = p.PrescriptionNumber}));
 
     }
 }

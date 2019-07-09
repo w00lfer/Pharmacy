@@ -7,7 +7,7 @@ namespace Pharmacy.Repositories.Interfaces
     public interface IPrescriptionRepository
     {
         IEnumerable<Prescription> GetAllPrescriptions();
-        IEnumerable<long> GetPrescriptionsNumbers();
+        IQueryable<Prescription> GetPrescriptionsForMedicine(int medicineId);
         Prescription GetPrescriptionById(int prescriptionId);
         void AddPrescription(Prescription prescription);
         void EditPrescription(Prescription prescription);

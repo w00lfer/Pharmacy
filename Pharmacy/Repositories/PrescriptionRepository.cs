@@ -14,7 +14,7 @@ namespace Pharmacy.Repositories
 
         public IEnumerable<Prescription> GetAllPrescriptions() => _appDbContext.Prescriptions;
 
-        public IEnumerable<long> GetPrescriptionsNumbers() => _appDbContext.Prescriptions.Select(p => p.PrescriptionNumber).ToList();
+        public IQueryable<Prescription> GetPrescriptionsForMedicine(int medicineId) => _appDbContext.Prescriptions.Where(p => p.MedicineId == medicineId);
 
         public Prescription GetPrescriptionById(int prescriptionId) => _appDbContext.Prescriptions.FirstOrDefault(p => p.Id == prescriptionId);
 
