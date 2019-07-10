@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Pharmacy.Migrations
 {
-    public partial class DbInitialize : Migration
+    public partial class OrderModelChanges : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,8 +14,8 @@ namespace Pharmacy.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true),
-                    Manufacturer = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(maxLength: 100, nullable: false),
+                    Manufacturer = table.Column<string>(maxLength: 100, nullable: false),
                     Price = table.Column<double>(nullable: false),
                     Amount = table.Column<int>(nullable: false),
                     WithPrescription = table.Column<bool>(nullable: false)
@@ -34,7 +34,8 @@ namespace Pharmacy.Migrations
                     PrescriptionId = table.Column<int>(nullable: false),
                     MedicineId = table.Column<int>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
-                    Amount = table.Column<int>(nullable: false)
+                    Amount = table.Column<int>(nullable: false),
+                    OrderCost = table.Column<double>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -47,9 +48,10 @@ namespace Pharmacy.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CustomerName = table.Column<string>(nullable: true),
-                    Pesel = table.Column<int>(nullable: false),
-                    PrescriptionNumber = table.Column<int>(nullable: false)
+                    CustomerName = table.Column<string>(maxLength: 100, nullable: false),
+                    Pesel = table.Column<long>(nullable: false),
+                    PrescriptionNumber = table.Column<long>(nullable: false),
+                    MedicineId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {

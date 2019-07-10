@@ -19,7 +19,7 @@
 <script>
     $(document).ready(function () {
         $("#medicinesDropdown").change(function () {
-            $(document).ready(function () {
+            $(document).ready(function () { 
                 $.ajax({
                     type: "GET",
                     url: "/Order/GetPrescriptionsForMedicine?medicineId=" + $("#medicinesDropdown option:selected").val(),
@@ -37,9 +37,38 @@
 </script>
 <script>
     $(document).ready(function () {
+        $("#medicinesDropdown").change(function () {
+            $(document).ready(function () {
+                $.ajax({
+                    type: "GET",
+                    url: "/Order/GetInfoIfMedicineHasPrescription?medicineId=" + $("#medicinesDropdown option:selected").val(),
+                    success: function (data) {
+                        if (data == true)
+                        {
+                            document.getElementById("prescriptionsDropdown").disabled = false;
+                        }
+                        else
+                        {
+                            document.getElementById("prescriptionsDropdown").disabled = true;
+                        }
+                    }
+                });
+            });
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
         $("#submitButton").click(function() {
             $("#medicinesDropdownValue").val($("#medicinesDropdown option:selected").val());
-            $("#prescriptionsDropdownValue").val($("#prescriptionsDropdown option:selected").val());
+            if ($("#prescriptionsDropdown option:selected").val() == -1)
+            {
+                $("#prescriptionsDropdownValue").val(null);
+            }
+            else
+            {
+                $("#prescriptionsDropdownValue").val($("#prescriptionsDropdown option:selected").val());
+            }
         });
     });
 </script>

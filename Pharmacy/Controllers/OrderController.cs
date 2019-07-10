@@ -34,7 +34,7 @@ namespace Pharmacy.Controllers
                 {
                     Order = order,
                     MedicineName = _medicineRepository.GetMedicineById(order.MedicineId).Name,
-                    PrescriptionNumber = _medicineRepository.GetMedicineById(order.MedicineId).WithPrescription ? _prescriptionRepository.GetPrescriptionById(order.PrescriptionId)?.PrescriptionNumber : default
+                    WithPrescription = _medicineRepository.GetMedicineById(order.MedicineId).WithPrescription
                 }).ToList();
 
             return View(orderViewModels);
@@ -51,16 +51,23 @@ namespace Pharmacy.Controllers
                 order.Date = DateTime.UtcNow;
                 order.OrderCost = _medicineRepository.GetMedicineById(order.MedicineId).Price * order.Amount;
                 _orderRepository.AddOrder(order);
+                if(order.PrescriptionId != null)
+                {
+                    _prescriptionRepository.DeletePrescription(_prescriptionRepository.GetPrescriptionById((int)order.PrescriptionId));
+                }
                 return RedirectToAction(nameof(Index));
             }
 
             return View(order);
         }
 
+
         public ActionResult GetMedicines() => Json(_medicineRepository.GetAllMedicines().Select(m => new {MedicineId = m.Id, MedicineName = m.Name}).ToList());
 
 
         public ActionResult GetPrescriptionsForMedicine(int medicineId) => Json(_prescriptionRepository.GetPrescriptionsForMedicine(medicineId).Select(p => new {PrescriptionId = p.Id, PrescriptionNumber = p.PrescriptionNumber}));
 
+        public ActionResult GetInfoIfMedicineHasPrescription(int medicineId) =>
+            Json(_medicineRepository.GetMedicineById(medicineId).WithPrescription);
     }
 }

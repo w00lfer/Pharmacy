@@ -21,7 +21,7 @@ namespace Pharmacy.Migrations
 
             modelBuilder.Entity("Pharmacy.Models.Medicine", b =>
                 {
-                    b.Property<int>("MedicineId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -39,14 +39,14 @@ namespace Pharmacy.Migrations
 
                     b.Property<bool>("WithPrescription");
 
-                    b.HasKey("MedicineId");
+                    b.HasKey("Id");
 
                     b.ToTable("Medicines");
                 });
 
             modelBuilder.Entity("Pharmacy.Models.Order", b =>
                 {
-                    b.Property<int>("MedicineId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -58,16 +58,17 @@ namespace Pharmacy.Migrations
 
                     b.Property<double>("OrderCost");
 
-                    b.Property<int>("PrescriptionId");
+                    b.Property<int?>("PrescriptionId")
+                        .IsRequired();
 
-                    b.HasKey("MedicineId");
+                    b.HasKey("Id");
 
                     b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("Pharmacy.Models.Prescription", b =>
                 {
-                    b.Property<int>("MedicineId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -81,7 +82,7 @@ namespace Pharmacy.Migrations
 
                     b.Property<long>("PrescriptionNumber");
 
-                    b.HasKey("MedicineId");
+                    b.HasKey("Id");
 
                     b.ToTable("Prescriptions");
                 });

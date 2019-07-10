@@ -9,7 +9,7 @@ namespace Pharmacy.ViewModels
     public class OrderIndexViewModel
     {
         public Order Order { get; set; }
-        public String MedicineName { get; set; }
-        public long? PrescriptionNumber { get; set; }
+        public string MedicineName { get; set; }
+        public bool WithPrescription { get; set; }
     }
 }

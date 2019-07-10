@@ -7,8 +7,7 @@ namespace Pharmacy.Models
     {
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Prescription number is required")]
-        public int PrescriptionId { get; set; }
+        public int? PrescriptionId { get; set; }
 
         [Required(ErrorMessage = "Medicine is required")]
         public int MedicineId { get; set; }

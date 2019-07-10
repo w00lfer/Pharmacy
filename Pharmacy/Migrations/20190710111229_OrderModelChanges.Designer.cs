@@ -10,8 +10,8 @@ using Pharmacy.Models;
 namespace Pharmacy.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20190705135039_ModelsUpdate3")]
-    partial class ModelsUpdate3
+    [Migration("20190710111229_OrderModelChanges")]
+    partial class OrderModelChanges
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,7 +23,7 @@ namespace Pharmacy.Migrations
 
             modelBuilder.Entity("Pharmacy.Models.Medicine", b =>
                 {
-                    b.Property<int>("MedicineId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -41,14 +41,14 @@ namespace Pharmacy.Migrations
 
                     b.Property<bool>("WithPrescription");
 
-                    b.HasKey("MedicineId");
+                    b.HasKey("Id");
 
                     b.ToTable("Medicines");
                 });
 
             modelBuilder.Entity("Pharmacy.Models.Order", b =>
                 {
-                    b.Property<int>("MedicineId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -58,16 +58,19 @@ namespace Pharmacy.Migrations
 
                     b.Property<int>("MedicineId");
 
-                    b.Property<int>("PrescriptionId");
+                    b.Property<double>("OrderCost");
 
-                    b.HasKey("MedicineId");
+                    b.Property<int?>("PrescriptionId")
+                        .IsRequired();
+
+                    b.HasKey("Id");
 
                     b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("Pharmacy.Models.Prescription", b =>
                 {
-                    b.Property<int>("MedicineId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -81,7 +84,7 @@ namespace Pharmacy.Migrations
 
                     b.Property<long>("PrescriptionNumber");
 
-                    b.HasKey("MedicineId");
+                    b.HasKey("Id");
 
                     b.ToTable("Prescriptions");
                 });

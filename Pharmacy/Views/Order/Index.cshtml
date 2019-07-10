@@ -24,14 +24,7 @@
             <td>@Html.DisplayFor(model => order.MedicineName)</td>
             <td>@Html.DisplayFor(model => order.Order.Amount)</td>
             <td>@Html.Raw(order.Order.OrderCost.ToString("c"))</td>
-            @if (order.PrescriptionNumber != null)
-            {
-                <td>@Html.DisplayFor(model => order.PrescriptionNumber)</td>
-            }
-            else
-            {
-                <td></td>
-            }
+            <td>@Html.DisplayFor(model => order.WithPrescription)</td>
             <td>
                 <a asp-action="" asp-route-medicineMedicineId="">Edit</a>
                 <a asp-action="" asp-route-medicineMedicineId="">Delete</a>
