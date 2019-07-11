@@ -1,36 +1,68 @@
-﻿
-@using Pharmacy.ViewModels
-@model Pharmacy.ViewModels.PrescriptionCreateViewModel
+﻿@model Pharmacy.Models.Prescription
 
+<script type="text/javascript">
+    $(document).ready(function() {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetMedicinesWithPrescription", "Prescription")',
+            success: function(data) {
+                var s = '<option value="-1">Please Select a medicine</option>';
+                for (var i = 0; i < data.length; i++) {
+                    s += `<option value="${data[i].medicineId}">${data[i].medicineName}</option>`;
+                }
+                $("#prescriptionMedicinesDropdown").html(s);
 
-<h2>Add a medicine</h2>
-<hr />
-<div class="thumbnail col-md-offset-3 col-md-6">
+            }
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function() {  
+        $("#prescriptionSubmitButton").click(function() {
+            $("#prescriptionMedicinesDropdownValue").val($("#prescriptionMedicinesDropdown option:selected").val());
+        });
+    });
+</script>
+
+<h2>Add a prescription</h2>
+<hr/>
+<div class="thumbnail col-md-offset-3 col-md-6 row">
     <form asp-action="Create" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <div class="form-group">
-                <label asp-for="@Model.prescription.CustomerName" class="control-label"></label>
-                <input asp-for="@Model.prescription.CustomerName" class="form-control" />
-                <span asp-validation-for="@Model.prescription.CustomerName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.prescription.Pesel" class="control-label"></label>
-                <input asp-for="@Model.prescription.Pesel" class="form-control" />
-                <span asp-validation-for="@Model.prescription.Pesel" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.prescription.PrescriptionNumber" class="control-label"></label>
-                <input asp-for="@Model.prescription.PrescriptionNumber" class="form-control" />
-                <span asp-validation-for="@Model.prescription.PrescriptionNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.MedicineWithPrescriptionId" type="hidden" class="control-label">Med</label>
-                <select asp-for="@Model.prescription.MedicineId" asp-items="@Model.MedicinesWithPrescription"></select>
-            </div>
+        <div class="form-group">
+            <label class="control-label">
+                <b>Customer name</b>
+            </label>
+            <input asp-for="@Model.CustomerName" class="form-control"/>
+            <span asp-validation-for="@Model.CustomerName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label class="control-label">
+                <b>Pesel</b>
+            </label>
+            <input asp-for="@Model.Pesel" class="form-control"/>
+            <span asp-validation-for="@Model.Pesel" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label class="control-label">
+                <b>Prescription number</b>
+            </label>
+            <input asp-for="@Model.PrescriptionNumber" class="form-control"/>
+            <span asp-validation-for="@Model.PrescriptionNumber" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="prescriptionMedicinesDropdown" class="control-label">
+                <b>Medicines</b>
+            </label>
+            <select class="form-control" asp-for="@Model.MedicineId" id="prescriptionMedicinesDropdown" name="prescriptionMedicinesDropdown"></select>
+            <input type="hidden" asp-for="@Model.MedicineId" id="prescriptionMedicinesDropdownValue"/>
+            <span asp-validation-for="@Model.MedicineId" class="text-danger"></span>
+        </div>
 
-            <div class="form-group">
-                <input type="submit" value="Add medicine" class="btn btn-success mt-30 pull-right" />
-                <a asp-action="Index" class="btn btn-danger mt-30">Back</a>
-            </div>
+        <div class="form-group">
+            <input type="submit" value="Add medicine" class="btn btn-success mt-30 pull-right" id="prescriptionSubmitButton"/>
+            <a asp-action="Index" class="btn btn-danger mt-30">Back</a>
+        </div>
     </form>
 </div>

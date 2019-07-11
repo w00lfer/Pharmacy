@@ -10,9 +10,9 @@
         <th>Medicine</th>
         <th>Amount</th>
         <th>Price</th>
-        <th>Prescription Number</th>
+        <th>With Prescription</th>
         <th>
-            <a asp-action="Create" class="btn btn-danger btn-sm">Add new medicine</a>
+            <a asp-action="Create" class="btn btn-danger btn-sm">Add new order</a>
         </th>
     </tr>
     </thead>
@@ -24,13 +24,9 @@
             <td>@Html.DisplayFor(model => order.MedicineName)</td>
             <td>@Html.DisplayFor(model => order.Order.Amount)</td>
             <td>@Html.Raw(order.Order.OrderCost.ToString("c"))</td>
-            <td>@Html.DisplayFor(model => order.WithPrescription)</td>
-            <td>
-                <a asp-action="" asp-route-medicineMedicineId="">Edit</a>
-                <a asp-action="" asp-route-medicineMedicineId="">Delete</a>
-            </td>
-
+            <td>@order.WithPrescription</td>
+            <td></td>
         </tr>
     }
     </tbody>
-</table>
+</table>    

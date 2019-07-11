@@ -11,8 +11,6 @@ namespace Pharmacy
     {
         public static void Main(string[] args)
         {
-            //CreateWebHostBuilder(args).Build().Run();
-
             var host = CreateWebHostBuilder(args).Build();
 
             using (var scope = host.Services.CreateScope())
@@ -26,7 +24,6 @@ namespace Pharmacy
                 }
                 catch (Exception ex)
                 {
-                    // w rzeczywistej sytuacji moglibyśmy to zarejestrować
                 }
             }
 

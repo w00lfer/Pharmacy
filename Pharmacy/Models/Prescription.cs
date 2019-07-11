@@ -21,6 +21,7 @@ namespace Pharmacy.Models
         public long PrescriptionNumber { get; set; }
 
         [Required]
+        [Range(1,999999999999999,ErrorMessage = "Medicine is required")]
         public int MedicineId { get; set; }
     }
 }

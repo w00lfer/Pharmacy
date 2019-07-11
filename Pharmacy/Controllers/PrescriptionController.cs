@@ -1,11 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Pharmacy.Extensions;
+﻿using Microsoft.AspNetCore.Mvc;
 using Pharmacy.Models;
 using Pharmacy.Repositories.Interfaces;
-using Pharmacy.ViewModels;
+using System.Linq;
 
 namespace Pharmacy.Controllers
 {
@@ -21,43 +17,20 @@ namespace Pharmacy.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
-        {
-            if (_prescriptionRepository.GetAllPrescriptions() is null)
-            {
-
-            }
-            return View(_prescriptionRepository.GetAllPrescriptions().OrderBy(p => p.Id));
-        }
+        public IActionResult Index() => View(_prescriptionRepository.GetAllPrescriptions().OrderBy(p => p.Id));
 
         [HttpGet]
-        public IActionResult Create()
-        {
-            var model = new PrescriptionCreateViewModel
-            {
-                MedicinesWithPrescription = new SelectList(_medicineRepository.GetMedicinesWithPrescription()
-                    .Select(p => new DataTransferForPrescriptionCreate{MedicineId =  p.Id, MedicineName = p.Name }).ToList(), nameof(DataTransferForPrescriptionCreate.MedicineId) , nameof(DataTransferForPrescriptionCreate.MedicineName))
-            };
-            TempData.Clear();
-            TempData.Set("MedicinesWithPrescription", _medicineRepository.GetMedicinesWithPrescription()
-                .Select(p => new DataTransferForPrescriptionCreate{MedicineId = p.Id, MedicineName = p.Name}).ToList());
-            return View(model);
-        }
+        public IActionResult Create() => View();
 
-        [HttpPost]
-        public IActionResult Create(PrescriptionCreateViewModel prescriptionCreateViewModel)
+            [HttpPost]
+        public IActionResult Create(Prescription prescription)
         {
             if (ModelState.IsValid)
             {
-                _prescriptionRepository.AddPrescription(prescriptionCreateViewModel.prescription);
-                TempData.Remove("MedicinesWithPrescription");
+                _prescriptionRepository.AddPrescription(prescription);
                 return RedirectToAction(nameof(Index));
             }
-
-            prescriptionCreateViewModel.MedicinesWithPrescription =
-                new SelectList(TempData.Get<List<DataTransferForPrescriptionCreate>>("MedicinesWithPrescription"), nameof(DataTransferForPrescriptionCreate.MedicineId), nameof(DataTransferForPrescriptionCreate.MedicineName));
-
-            return View(prescriptionCreateViewModel);
+            return View(prescription);
         }
 
         [HttpGet]
@@ -74,5 +47,7 @@ namespace Pharmacy.Controllers
             _prescriptionRepository.DeletePrescription(prescription);
             return RedirectToAction(nameof(Index));
         }
+
+        public ActionResult GetMedicinesWithPrescription() => Json(_medicineRepository.GetMedicinesWithPrescription().Select(m => new {MedicineId = m.Id, MedicineName = m.Name}).ToList());
     }
 }

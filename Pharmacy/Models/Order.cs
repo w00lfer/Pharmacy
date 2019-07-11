@@ -7,9 +7,11 @@ namespace Pharmacy.Models
     {
         public int Id { get; set; }
 
+        [Range(1, 99999999999999999,ErrorMessage = "You can't choose default option")]
         public int? PrescriptionId { get; set; }
 
         [Required(ErrorMessage = "Medicine is required")]
+        [Range(1,99999999999999999,ErrorMessage = "Medicine is required")]
         public int MedicineId { get; set; }
 
         public DateTime Date { get; set; }

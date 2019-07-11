@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Pharmacy.Extensions;
+﻿using Microsoft.AspNetCore.Mvc;
 using Pharmacy.Models;
 using Pharmacy.Repositories.Interfaces;
 using Pharmacy.ViewModels;
+using System;
+using System.Linq;
 
 namespace Pharmacy.Controllers
 {
@@ -67,7 +62,6 @@ namespace Pharmacy.Controllers
 
         public ActionResult GetPrescriptionsForMedicine(int medicineId) => Json(_prescriptionRepository.GetPrescriptionsForMedicine(medicineId).Select(p => new {PrescriptionId = p.Id, PrescriptionNumber = p.PrescriptionNumber}));
 
-        public ActionResult GetInfoIfMedicineHasPrescription(int medicineId) =>
-            Json(_medicineRepository.GetMedicineById(medicineId).WithPrescription);
+        public ActionResult GetInfoIfMedicineHasPrescription(int medicineId) => Json(_medicineRepository.GetMedicineById(medicineId).WithPrescription);
     }
 }
