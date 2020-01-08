@@ -3,10 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Pharmacy.Models
 {
-    public class Order
+    public class Order : BaseEntity
     {
-        public int Id { get; set; }
-
         [Range(1, 99999999999999999,ErrorMessage = "You can't choose default option")]
         public int? PrescriptionId { get; set; }
 

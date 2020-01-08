@@ -1,16 +1,11 @@
 ﻿using Pharmacy.Models;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace Pharmacy.Repositories.Interfaces
 {
-    public interface IMedicineRepository
+    public interface IMedicineRepository : IGenericRepository<Medicine>
     {
-        IEnumerable<Medicine> GetAllMedicines();
-        IQueryable<Medicine> GetMedicinesWithPrescription();
-        Medicine GetMedicineById(int medicineId);
-        void AddMedicine(Medicine medicine);
-        void EditMedicine(Medicine medicine);
-        void DeleteMedicine(Medicine medicine);
+        Task<List<Medicine>> GetMedicinesWithPrescriptionAsync();
     }
 }

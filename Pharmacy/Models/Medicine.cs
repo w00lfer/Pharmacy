@@ -1,12 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Pharmacy.Models
 {
-    public class Medicine
+    public class Medicine : BaseEntity
     {
-        public int Id { get; set; }
-
         [Required(ErrorMessage = "Medicine's name is required")]
         [Display(Name = "Name")]
         [StringLength(100,ErrorMessage = "Medicine's name is too long")]

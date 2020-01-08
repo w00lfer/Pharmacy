@@ -2,10 +2,8 @@
 
 namespace Pharmacy.Models
 {
-    public class Prescription
+    public class Prescription : BaseEntity
     {
-        public int Id { get; set; }
-
         [Required(ErrorMessage = "Medicine's name is required")]
         [Display(Name = "Customer name")]
         [StringLength(100, ErrorMessage = "Customer's name is too long")]
