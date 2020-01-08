@@ -1,67 +1,62 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Pharmacy.Models;
-using Pharmacy.Repositories.Interfaces;
+using Pharmacy.Services.Interfaces;
 using Pharmacy.ViewModels;
-using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Pharmacy.Controllers
 {
     public class OrderController : Controller
     {
-        private readonly IMedicineRepository _medicineRepository;
-        private readonly IPrescriptionRepository _prescriptionRepository;
-        private readonly IOrderRepository _orderRepository;
+        private readonly IMapper _mapper;
+        private readonly IMedicineService _medicineService;
+        private readonly IPrescriptionService _prescriptionService;
+        private readonly IOrderService _orderService;
 
-        public OrderController(IMedicineRepository medicineRepository, IPrescriptionRepository prescriptionRepository, IOrderRepository orderRepository)
+        public OrderController(IMapper mapper, IMedicineService medicineService, IPrescriptionService prescriptionService, IOrderService orderService)
         {
-            _medicineRepository = medicineRepository;
-            _prescriptionRepository = prescriptionRepository;
-            _orderRepository = orderRepository;
+            _mapper = mapper;
+            _medicineService = medicineService;
+            _prescriptionService = prescriptionService;
+            _orderService = orderService;
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var orders = _orderRepository.GetAllOrders().OrderBy(o => o.Date);
-            var orderViewModels  = orders.Select(order => 
-                new OrderIndexViewModel
-                {
-                    Order = order,
-                    MedicineName = _medicineRepository.GetMedicineById(order.MedicineId).Name,
-                    WithPrescription = _medicineRepository.GetMedicineById(order.MedicineId).WithPrescription
-                }).ToList();
-
+            var orders = (await _orderService.GetAllOrdersAsync()).OrderBy(o => o.Date);
+            var orderViewModels = _mapper.Map<List<OrderIndexViewModel>>(orders);
             return View(orderViewModels);
         }
 
         [HttpGet]
-        public IActionResult Create() => View();
+        public async Task<IActionResult> Create() => await Task.Run(() => View());
 
         [HttpPost]
-        public IActionResult Create(Order order)
+        public async Task<IActionResult> Create(OrderCreateViewModel orderCreateViewModel)
         {
+            var order = _mapper.Map<Order>(orderCreateViewModel);
             if (ModelState.IsValid)
             {
-                order.Date = DateTime.UtcNow;
-                order.OrderCost = _medicineRepository.GetMedicineById(order.MedicineId).Price * order.Amount;
-                _orderRepository.AddOrder(order);
+                await _orderService.AddOrderAsync(order);
                 if(order.PrescriptionId != null)
-                {
-                    _prescriptionRepository.DeletePrescription(_prescriptionRepository.GetPrescriptionById((int)order.PrescriptionId));
+                { 
+                    await _prescriptionService.DeletePrescriptionAsync((int)order.PrescriptionId);
                 }
                 return RedirectToAction(nameof(Index));
             }
-
-            return View(order);
+            return View(orderCreateViewModel);
         }
 
 
-        public ActionResult GetMedicines() => Json(_medicineRepository.GetAllMedicines().Select(m => new {MedicineId = m.Id, MedicineName = m.Name}).ToList());
+        public async Task<IActionResult> GetMedicinesAsync() => Json((await _medicineService.GetAllMedicinesAsync()).Select(m => new {MedicineId = m.Id, MedicineName = m.Name}).ToList());
 
 
-        public ActionResult GetPrescriptionsForMedicine(int medicineId) => Json(_prescriptionRepository.GetPrescriptionsForMedicine(medicineId).Select(p => new {PrescriptionId = p.Id, PrescriptionNumber = p.PrescriptionNumber}));
+        public async Task<IActionResult> GetPrescriptionsForMedicineAsync(int medicineId) => Json((await _prescriptionService.GetPrescriptionsForMedicineAsync(medicineId)).Select(p => new {PrescriptionId = p.Id, PrescriptionNumber = p.PrescriptionNumber}));
 
-        public ActionResult GetInfoIfMedicineHasPrescription(int medicineId) => Json(_medicineRepository.GetMedicineById(medicineId).WithPrescription);
+        public async Task<IActionResult> GetInfoIfMedicineHasPrescriptionAsync(int medicineId) => Json((await _medicineService.GetMedicineByIdAsync(medicineId)).WithPrescription);
     }
 }

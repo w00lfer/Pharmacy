@@ -1,53 +1,53 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Pharmacy.Models;
-using Pharmacy.Repositories.Interfaces;
+using Pharmacy.Services.Interfaces;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Pharmacy.Controllers
 {
     public class PrescriptionController : Controller
     {
-        private readonly IPrescriptionRepository _prescriptionRepository;
-        private readonly IMedicineRepository _medicineRepository;
+        private readonly IPrescriptionService _prescriptionService;
+        private readonly IMedicineService _medicineService;
 
-        public PrescriptionController(IPrescriptionRepository prescriptionRepository, IMedicineRepository medicineRepository)
+        public PrescriptionController(IPrescriptionService prescriptionService, IMedicineService medicineService)
         {
-            _prescriptionRepository = prescriptionRepository;
-            _medicineRepository = medicineRepository;
+            _prescriptionService = prescriptionService;
+            _medicineService = medicineService;
         }
 
         [HttpGet]
-        public IActionResult Index() => View(_prescriptionRepository.GetAllPrescriptions().OrderBy(p => p.Id));
+        public async Task<IActionResult> Index() => View((await _prescriptionService.GetAllPrescriptionsAsync()).OrderBy(p => p.Id));
 
         [HttpGet]
-        public IActionResult Create() => View();
+        public async Task<IActionResult> Create() => await Task.Run(() => View());
 
-            [HttpPost]
-        public IActionResult Create(Prescription prescription)
+        [HttpPost]
+        public async Task<IActionResult> Create(Prescription prescription)
         {
             if (ModelState.IsValid)
             {
-                _prescriptionRepository.AddPrescription(prescription);
+                await _prescriptionService.AddPrescriptionAsync(prescription);
                 return RedirectToAction(nameof(Index));
             }
             return View(prescription);
         }
 
         [HttpGet]
-        public IActionResult Delete(int prescriptionId) =>
-            _prescriptionRepository.GetPrescriptionById(prescriptionId) is var prescription == null
+        public async Task<IActionResult> Delete(int prescriptionId) =>
+            await _prescriptionService.GetPrescriptionByIdAsync(prescriptionId) is var prescription == null
                 ? (IActionResult)NotFound()
                 : View(prescription);
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int prescriptionId)
+        public async Task<IActionResult> DeleteConfirmed(int prescriptionId)
         {
-            var prescription = _prescriptionRepository.GetPrescriptionById(prescriptionId);
-            _prescriptionRepository.DeletePrescription(prescription);
+            await _prescriptionService.DeletePrescriptionAsync(prescriptionId);
             return RedirectToAction(nameof(Index));
         }
 
-        public ActionResult GetMedicinesWithPrescription() => Json(_medicineRepository.GetMedicinesWithPrescription().Select(m => new {MedicineId = m.Id, MedicineName = m.Name}).ToList());
+        public async Task<IActionResult> GetMedicinesWithPrescriptionAsync() => Json((await _medicineService.GetMedicinesWithPrescriptionAsync()).Select(m => new {MedicineId = m.Id, MedicineName = m.Name}).ToList());
     }
 }

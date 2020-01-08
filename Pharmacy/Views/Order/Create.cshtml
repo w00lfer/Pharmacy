@@ -1,10 +1,10 @@
-﻿@model Pharmacy.Models.Order
+﻿@model Pharmacy.ViewModels.OrderCreateViewModel
 
 <script type="text/javascript">
     $(document).ready(function() {
         $.ajax({
             type: "GET",
-            url: '@Url.Action("GetMedicines", "Order")',
+            url: '@Url.Action("GetMedicinesAsync", "Order")',
             success: function(data) {
                 var s = '<option value="-1">Please Select a medicine</option>';
                 for (var i = 0; i < data.length; i++) {
@@ -24,7 +24,7 @@
                 $(document).ready(function() {
                     $.ajax({
                         type: "GET",
-                        url: "/Order/GetPrescriptionsForMedicine?medicineId=" +
+                        url: "/Order/GetPrescriptionsForMedicineAsyncAsync?medicineId=" +
                             $("#orderMedicinesDropdown option:selected").val(),
                         success: function(data) {
                             var s = '<option value="-1">Please Select a prescription</option>';

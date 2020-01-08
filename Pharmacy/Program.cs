@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +10,7 @@ namespace Pharmacy
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var host = CreateWebHostBuilder(args).Build();
 
@@ -20,7 +21,7 @@ namespace Pharmacy
                 {
                     var context = services.GetRequiredService<AppDbContext>();
                     context.Database.Migrate();
-                    DbInitializer.Seed(context);
+                    await DbInitializer.Seed(context);
                 }
                 catch (Exception ex)
                 {

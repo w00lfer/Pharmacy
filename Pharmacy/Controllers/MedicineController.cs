@@ -1,67 +1,67 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Pharmacy.Models;
-using Pharmacy.Repositories.Interfaces;
+using Pharmacy.Services.Interfaces;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Pharmacy.Controllers
 {
     public class MedicineController : Controller
     {
-        private readonly IMedicineRepository _medicineRepository;
+        private readonly IMedicineService _medicineService;
 
-        public MedicineController(IMedicineRepository medicinerepository)
+        public MedicineController(IMedicineService medicineService)
         {
-            _medicineRepository = medicinerepository;
+            _medicineService = medicineService;
         }
 
         [HttpGet]
-        public IActionResult Index() => View(_medicineRepository.GetAllMedicines().OrderBy(m => m.Id));
+        public async Task<IActionResult> Index() => View((await _medicineService.GetAllMedicinesAsync()).OrderBy(m => m.Id));
 
         [HttpGet]
-        public IActionResult Create() => View();
+        public async Task<IActionResult> Create() => await Task.Run(() => View());
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Medicine medicine)
+        public async Task<IActionResult> Create(Medicine medicine)
         {
             if (ModelState.IsValid)
             {
-                _medicineRepository.AddMedicine(medicine);
+                await _medicineService.AddMedicineAsync(medicine);
                 return RedirectToAction(nameof(Index));
             }
             return View(medicine);
         }
 
         [HttpGet]
-        public IActionResult Edit(int medicineId) =>
-            _medicineRepository.GetMedicineById(medicineId) is var medicine == null
+        public async Task<IActionResult> Edit(int medicineId) =>
+            await _medicineService.GetMedicineByIdAsync(medicineId) is var medicine == null
                 ? (IActionResult) NotFound()
                 : View(medicine);
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Medicine medicine)
+        public async Task<IActionResult> Edit(Medicine medicine)
         {
             if (ModelState.IsValid)
             {
-                _medicineRepository.EditMedicine(medicine);
+                await _medicineService.EditMedicineAsync(medicine);
                 return RedirectToAction(nameof(Index));
             }
             return View(medicine);
         }
 
         [HttpGet]
-        public IActionResult Delete(int medicineId) =>
-            _medicineRepository.GetMedicineById(medicineId) is var medicine == null
+        public async Task<IActionResult> Delete(int medicineId) =>
+            await _medicineService.GetMedicineByIdAsync(medicineId) is var medicine == null
                 ? (IActionResult) NotFound()
                 : View(medicine);
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int medicineId)
+        public async Task<IActionResult> DeleteConfirmed(int medicineId)
         {
-            var medicine = _medicineRepository.GetMedicineById(medicineId);
-            _medicineRepository.DeleteMedicine(medicine);
+            await _medicineService.DeleteMedicineAsync(medicineId);
             return RedirectToAction(nameof(Index));
         }
     }

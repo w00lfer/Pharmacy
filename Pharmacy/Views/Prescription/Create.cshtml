@@ -4,7 +4,7 @@
     $(document).ready(function() {
         $.ajax({
             type: "GET",
-            url: '@Url.Action("GetMedicinesWithPrescription", "Prescription")',
+            url: '@Url.Action("GetMedicinesWithPrescriptionAsync", "Prescription")',
             success: function(data) {
                 var s = '<option value="-1">Please Select a medicine</option>';
                 for (var i = 0; i < data.length; i++) {
