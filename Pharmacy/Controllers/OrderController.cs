@@ -25,12 +25,8 @@ namespace Pharmacy.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
-        {
-            var orders = (await _orderService.GetAllOrdersAsync()).OrderBy(o => o.Date);
-            var orderViewModels = _mapper.Map<List<OrderIndexViewModel>>(orders);
-            return View(orderViewModels);
-        }
+        public async Task<IActionResult> Index() => 
+            View(_mapper.Map<List<OrderIndexViewModel>>((await _orderService.GetAllOrdersAsync()).OrderBy(o => o.Date)));
 
         [HttpGet]
         public async Task<IActionResult> Create() => await Task.Run(() => View());
@@ -51,9 +47,7 @@ namespace Pharmacy.Controllers
             return View(orderCreateViewModel);
         }
 
-
         public async Task<IActionResult> GetMedicinesAsync() => Json((await _medicineService.GetAllMedicinesAsync()).Select(m => new {MedicineId = m.Id, MedicineName = m.Name}).ToList());
-
 
         public async Task<IActionResult> GetPrescriptionsForMedicineAsync(int medicineId) => Json((await _prescriptionService.GetPrescriptionsForMedicineAsync(medicineId)).Select(p => new {PrescriptionId = p.Id, PrescriptionNumber = p.PrescriptionNumber}));
 

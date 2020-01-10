@@ -6,7 +6,7 @@ namespace Pharmacy.Services.Interfaces
 {
     public interface IPrescriptionService
     {
-        Task<IEnumerable<Prescription>> GetAllPrescriptionsAsync();
+        Task<List<Prescription>> GetAllPrescriptionsAsync();
         Task<List<Prescription>> GetPrescriptionsForMedicineAsync(int medicineId);
         Task<Prescription> GetPrescriptionByIdAsync(int prescriptionId);
         Task AddPrescriptionAsync(Prescription prescription);

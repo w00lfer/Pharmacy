@@ -14,7 +14,7 @@ namespace Pharmacy.Services
         public PrescriptionService(IPrescriptionRepository prescriptionRepository) =>
             _prescriptionRepository = prescriptionRepository;
 
-        public async Task<IEnumerable<Prescription>> GetAllPrescriptionsAsync() =>
+        public async Task<List<Prescription>> GetAllPrescriptionsAsync() =>
             await _prescriptionRepository.GetAll().ToListAsync();
 
         public async Task<List<Prescription>> GetPrescriptionsForMedicineAsync(int medicineId) =>

@@ -10,10 +10,7 @@ namespace Pharmacy.Controllers
     {
         private readonly IMedicineService _medicineService;
 
-        public MedicineController(IMedicineService medicineService)
-        {
-            _medicineService = medicineService;
-        }
+        public MedicineController(IMedicineService medicineService) => _medicineService = medicineService;
 
         [HttpGet]
         public async Task<IActionResult> Index() => View((await _medicineService.GetAllMedicinesAsync()).OrderBy(m => m.Id));

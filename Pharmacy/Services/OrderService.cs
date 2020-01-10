@@ -10,6 +10,7 @@ namespace Pharmacy.Services
     public class OrderService : IOrderService
     {
         private readonly IOrderRepository _orderRepository;
+
         public OrderService(IOrderRepository orderRepository) => _orderRepository = orderRepository;
 
         public async Task<List<Order>> GetAllOrdersAsync() => await _orderRepository.GetAll().ToListAsync();
