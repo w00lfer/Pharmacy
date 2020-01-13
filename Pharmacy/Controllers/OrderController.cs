@@ -1,9 +1,6 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using Pharmacy.Models;
+﻿using Microsoft.AspNetCore.Mvc;
 using Pharmacy.Services.Interfaces;
 using Pharmacy.ViewModels;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,14 +8,12 @@ namespace Pharmacy.Controllers
 {
     public class OrderController : Controller
     {
-        private readonly IMapper _mapper;
         private readonly IMedicineService _medicineService;
         private readonly IPrescriptionService _prescriptionService;
         private readonly IOrderService _orderService;
 
-        public OrderController(IMapper mapper, IMedicineService medicineService, IPrescriptionService prescriptionService, IOrderService orderService)
+        public OrderController(IMedicineService medicineService, IPrescriptionService prescriptionService, IOrderService orderService)
         {
-            _mapper = mapper;
             _medicineService = medicineService;
             _prescriptionService = prescriptionService;
             _orderService = orderService;
@@ -26,7 +21,7 @@ namespace Pharmacy.Controllers
 
         [HttpGet]
         public async Task<IActionResult> Index() => 
-            View(_mapper.Map<List<OrderIndexViewModel>>((await _orderService.GetAllOrdersAsync()).OrderBy(o => o.Date)));
+            View((await _orderService.GetAllOrdersAsync()).OrderBy(o => o.Order.Date));
 
         [HttpGet]
         public async Task<IActionResult> Create() => await Task.Run(() => View());
@@ -34,13 +29,12 @@ namespace Pharmacy.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(OrderCreateViewModel orderCreateViewModel)
         {
-            var order = _mapper.Map<Order>(orderCreateViewModel);
             if (ModelState.IsValid)
             {
-                await _orderService.AddOrderAsync(order);
-                if(order.PrescriptionId != null)
+                await _orderService.AddOrderAsync(orderCreateViewModel);
+                if(orderCreateViewModel.PrescriptionId != null)
                 { 
-                    await _prescriptionService.DeletePrescriptionAsync((int)order.PrescriptionId);
+                    await _prescriptionService.DeletePrescriptionAsync((int)orderCreateViewModel.PrescriptionId);
                 }
                 return RedirectToAction(nameof(Index));
             }
