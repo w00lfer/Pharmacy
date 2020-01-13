@@ -1,0 +1,24 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+    background-color: paleturquoise;
+    font-family: 'Roboto', sans-serif;
+}
+
+.body-content{
+    margin-top: 50px;
+    padding: 20px 10px 0 10px;
+}
+
+
+.mt-30 {
+    margin-top: 30px;
+}
+
+h1, h2, h3, h4 {
+    font-family: 'Roboto', sans-serif;
+}
+
+p {
+    font-family: 'Roboto', sans-serif;
+}

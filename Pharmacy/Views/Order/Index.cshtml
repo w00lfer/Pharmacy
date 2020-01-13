@@ -1,0 +1,32 @@
+﻿@model List<Pharmacy.ViewModels.OrderIndexViewModel>
+
+<div class="pull-left">
+    <h2>Orders</h2>
+</div>
+<table class="table" style="background-color: azure">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Medicine</th>
+            <th>Amount</th>
+            <th>Price</th>
+            <th>With Prescription</th>
+            <th>
+                <a asp-action="Create" class="btn btn-danger btn-sm">Add new order</a>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>@Html.Raw(order.Order.Date.ToShortDateString())</td>
+                <td>@Html.DisplayFor(model => order.MedicineName)</td>
+                <td>@Html.DisplayFor(model => order.Order.Amount)</td>
+                <td>@Html.Raw(order.Order.OrderCost.ToString("c"))</td>
+                <td>@order.WithPrescription</td>
+                <td></td>
+            </tr>
+        }
+    </tbody>
+</table>    

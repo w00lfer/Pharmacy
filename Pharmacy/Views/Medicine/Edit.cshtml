@@ -1,0 +1,43 @@
+﻿@model Pharmacy.Models.Medicine
+
+<h2>Edit Medicine</h2>
+<hr />
+<div class="row">
+    <form asp-action="Edit">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Manufacturer" class="control-label"></label>
+                <input asp-for="Manufacturer" class="form-control" />
+                <span asp-validation-for="Manufacturer" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Amount" class="control-label"></label>
+                <input asp-for="Amount" class="form-control" />
+                <span asp-validation-for="Amount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="WithPrescription" /> With prescription
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Edit medicine" class="btn btn-success" style="margin-top:30px" />
+                <a asp-action="Index" class="btn btn-danger pull-right" style="margin-top:30px">Back</a>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,28 @@
+﻿@model IEnumerable<Pharmacy.Models.Prescription>
+
+<div class="pull-left">
+    <h2>Prescriptions</h2>
+</div>
+<table class="table" style="background-color: azure">
+    <thead>
+        <tr>
+            <th>Customer's name</th>
+            <th>Pesel</th>
+            <th>Prescription number</th>
+            <th>
+                <a asp-action="Create" class="btn btn-danger btn-sm">Add new prescription</a>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var prescription in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(model => prescription.CustomerName)</td>
+                <td>@Html.DisplayFor(model => prescription.Pesel)</td>
+                <td>@Html.DisplayFor(model => prescription.PrescriptionNumber)</td>
+                <td><a asp-action="Delete" asp-route-prescriptionId="@prescription.Id">Delete</a></td>
+            </tr>
+        }
+    </tbody>
+</table>

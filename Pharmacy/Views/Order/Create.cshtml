@@ -1,0 +1,112 @@
+﻿@model Pharmacy.ViewModels.OrderCreateViewModel
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetAllMedicinesNames", "Order")',
+            success: function(data) {
+                var s = '<option value="-1">Please Select a medicine</option>';
+                for (var i = 0; i < data.length; i++) {
+                    s += `<option value="${data[i].id}">${data[i].name}</option>`;
+                }
+                $("#orderMedicinesDropdown").html(s);
+
+            }
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#orderMedicinesDropdown").change(function() {
+            if ($("#orderMedicinesDropdown option:selected").val() !== -1) {
+                $(document).ready(function() {
+                    $.ajax({
+                        type: "GET",
+                        url: "/Order/GetAllPrescriptionsNumbersForMedicine?medicineId=" +
+                            $("#orderMedicinesDropdown option:selected").val(),
+                        success: function(data) {
+                            var s = '<option value="-1">Please Select a prescription</option>';
+                            for (var i = 0; i < data.length; i++) {
+                                s += `<option value="${data[i].id}">${data[i].number}</option>`;
+                            }
+                            $("#orderPrescriptionsDropdown").html(s);
+                        }
+                    });
+
+                });
+            }
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#orderMedicinesDropdown").change(function() {
+            if ($("#orderMedicinesDropdown option:selected").val() != -1) {
+                $(document).ready(function() {
+                    $.ajax({
+                        type: "GET",
+                        url: "/Order/GetInfoIfMedicineHasPrescription?medicineId=" +
+                            $("#orderMedicinesDropdown option:selected").val(),
+                        success: function(data) {
+                            if (data == true) {
+                                document.getElementById("orderPrescriptionsDropdown").disabled = false;
+                            } else {
+                                document.getElementById("orderPrescriptionsDropdown").disabled = true;
+                            }
+                        }
+                    });
+
+                });
+            }
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#orderSubmitButton").click(function() {
+            $("#orderMedicinesDropdownValue").val($("#orderMedicinesDropdown option:selected").val());
+            if ($("#orderPrescriptionsDropdown option:selected").val() == -1) {
+                $("#orderPrescriptionsDropdownValue").val(null);
+            } else {
+                $("#orderPrescriptionsDropdownValue").val($("#orderPrescriptionsDropdown option:selected").val());
+            }
+        });
+    });
+</script>
+
+<h2>Place an order</h2>
+<hr />
+<div class="thumbnail col-md-offset-3 col-md-6 row">
+    <form asp-action="Create" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label for="orderMedicinesDropdown" class="control-label">
+                <b>Medicines</b>
+            </label>
+            <select class="form-control" asp-for="MedicineId" id="orderMedicinesDropdown"></select>
+            <input type="hidden" asp-for="MedicineId" id="orderMedicinesDropdownValue" />
+            <span asp-validation-for="MedicineId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="orderPrescriptionsDropdown" class="control-label">
+                <b>Prescriptions</b>
+            </label>
+            <select class="form-control" asp-for="PrescriptionId" id="orderPrescriptionsDropdown" name="orderPrescriptionsDropdown"></select>
+            <input type="hidden" asp-for="PrescriptionId" id="orderPrescriptionsDropdownValue" />
+            <span asp-validation-for="PrescriptionId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Amount</label>
+            <input class="form-control" asp-for="Amount" />
+            <span asp-validation-for="Amount" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Add order" class="btn btn-success mt-30 pull-right" id="orderSubmitButton" />
+            <a asp-action="Index" class="btn btn-danger mt-30">Back</a>
+        </div>
+    </form>
+</div>
