@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Pharmacy.Models;
+using Pharmacy.Models.DTO;
 using Pharmacy.Repositories.Interfaces;
 using Pharmacy.Services.Interfaces;
 using System.Collections.Generic;
@@ -10,15 +12,19 @@ namespace Pharmacy.Services
     public class PrescriptionService : IPrescriptionService
     {
         private readonly IPrescriptionRepository _prescriptionRepository;
+        private readonly IMapper _mapper;
 
-        public PrescriptionService(IPrescriptionRepository prescriptionRepository) =>
+        public PrescriptionService(IPrescriptionRepository prescriptionRepository, IMapper mapper)
+        {
             _prescriptionRepository = prescriptionRepository;
+            _mapper = mapper;
+        }
 
         public async Task<List<Prescription>> GetAllPrescriptionsAsync() =>
             await _prescriptionRepository.GetAll().ToListAsync();
 
-        public async Task<List<Prescription>> GetPrescriptionsForMedicineAsync(int medicineId) =>
-            await _prescriptionRepository.GetPrescriptionsForMedicineAsync(medicineId);
+        public async Task<List<PrescriptionNumber>> GetAllPrescriptionsNumbersForMedicineAsync(int medicineId) =>
+            _mapper.Map<List<PrescriptionNumber>>(await _prescriptionRepository.GetPrescriptionsForMedicineAsync(medicineId));
 
         public async Task<Prescription> GetPrescriptionByIdAsync(int prescriptionId) =>
             await _prescriptionRepository.GetByIdAsync(prescriptionId);

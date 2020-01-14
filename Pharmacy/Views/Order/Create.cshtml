@@ -4,11 +4,11 @@
     $(document).ready(function() {
         $.ajax({
             type: "GET",
-            url: '@Url.Action("GetMedicinesAsync", "Order")',
+            url: '@Url.Action("GetAllMedicinesNames", "Order")',
             success: function(data) {
                 var s = '<option value="-1">Please Select a medicine</option>';
                 for (var i = 0; i < data.length; i++) {
-                    s += `<option value="${data[i].medicineId}">${data[i].medicineName}</option>`;
+                    s += `<option value="${data[i].id}">${data[i].name}</option>`;
                 }
                 $("#orderMedicinesDropdown").html(s);
 
@@ -24,12 +24,12 @@
                 $(document).ready(function() {
                     $.ajax({
                         type: "GET",
-                        url: "/Order/GetPrescriptionsForMedicineAsyncAsync?medicineId=" +
+                        url: "/Order/GetAllPrescriptionsNumbersForMedicine?medicineId=" +
                             $("#orderMedicinesDropdown option:selected").val(),
                         success: function(data) {
                             var s = '<option value="-1">Please Select a prescription</option>';
                             for (var i = 0; i < data.length; i++) {
-                                s += `<option value="${data[i].prescriptionId}">${data[i].prescriptionNumber}</option>`;
+                                s += `<option value="${data[i].id}">${data[i].number}</option>`;
                             }
                             $("#orderPrescriptionsDropdown").html(s);
                         }

@@ -4,11 +4,11 @@
     $(document).ready(function() {
         $.ajax({
             type: "GET",
-            url: '@Url.Action("GetMedicinesWithPrescriptionAsync", "Prescription")',
+            url: '@Url.Action("GetMedicinesWithPrescription", "Prescription")',
             success: function(data) {
                 var s = '<option value="-1">Please Select a medicine</option>';
                 for (var i = 0; i < data.length; i++) {
-                    s += `<option value="${data[i].medicineId}">${data[i].medicineName}</option>`;
+                    s += `<option value="${data[i].id}">${data[i].name}</option>`;
                 }
                 $("#prescriptionMedicinesDropdown").html(s);
 

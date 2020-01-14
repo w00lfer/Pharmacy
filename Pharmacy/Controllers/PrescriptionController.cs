@@ -36,7 +36,7 @@ namespace Pharmacy.Controllers
 
         [HttpGet]
         public async Task<IActionResult> Delete(int prescriptionId) =>
-            await _prescriptionService.GetPrescriptionByIdAsync(prescriptionId) is var prescription == null
+            await _prescriptionService.GetPrescriptionByIdAsync(prescriptionId) is var prescription && prescription == null
                 ? (IActionResult)NotFound()
                 : View(prescription);
 
@@ -48,6 +48,6 @@ namespace Pharmacy.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> GetMedicinesWithPrescriptionAsync() => Json((await _medicineService.GetMedicinesWithPrescriptionAsync()).Select(m => new {MedicineId = m.Id, MedicineName = m.Name}).ToList());
+        public async Task<IActionResult> GetMedicinesWithPrescriptionAsync() => Json(await _medicineService.GetMedicinesWithPrescriptionAsync());
     }
 }

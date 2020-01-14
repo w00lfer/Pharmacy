@@ -55,8 +55,8 @@ namespace Pharmacy.Controllers
                 : View(medicine);
 
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int medicineId)
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmedAsync(int medicineId)
         {
             await _medicineService.DeleteMedicineAsync(medicineId);
             return RedirectToAction(nameof(Index));

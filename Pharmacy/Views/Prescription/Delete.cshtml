@@ -1,30 +1,33 @@
 ﻿@model Pharmacy.Models.Prescription
 
-    <div>
-        <div class="thumbnail col-md-offset-3 col-md-6">
-            <h2>Are you sure to delete this prescription?</h2>
-            <div>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Customer's name</th>
-                            <th>Pesel</th>
-                            <th>Prescription number</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    <td>@Model.CustomerName</td>
-                    <td>@Model.Pesel</td>
-                    <td>@Model.PrescriptionNumber</td>
-                    </tbody>
-                </table>
-                <h4 class="pull-right">
-                    <form asp-action="Delete" asp-route-prescriptionId="@Model.Id">
-                        <input type="hidden" asp-for="Id" />
-                        <input type="submit" value="Delete" class="btn btn-success" />
-                        <a asp-action="Index" class="btn btn-success">Back</a>
-                    </form>
-                </h4>
-            </div>
+<div>
+    <div class="thumbnail col-md-offset-3 col-md-6">
+        <h2>Are you sure to delete this prescription?</h2>
+        <div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Customer's name</th>
+                        <th>Pesel</th>
+                        <th>Prescription number</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@Model.CustomerName</td>
+                        <td>@Model.Pesel</td>
+                        <td>@Model.PrescriptionNumber</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h4 class="pull-right">
+                <form asp-action="Delete" asp-route-prescriptionId="@Model.Id">
+                    <input type="hidden" asp-for="Id" />
+                    <input type="submit" value="Delete" class="btn btn-success" />
+                    <a asp-action="Index" class="btn btn-success">Back</a>
+                </form>
+            </h4>
         </div>
     </div>
+</div>
+a

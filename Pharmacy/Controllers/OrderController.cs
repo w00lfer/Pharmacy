@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Pharmacy.Services.Interfaces;
 using Pharmacy.ViewModels;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Pharmacy.Controllers
@@ -21,7 +20,7 @@ namespace Pharmacy.Controllers
 
         [HttpGet]
         public async Task<IActionResult> Index() => 
-            View((await _orderService.GetAllOrdersAsync()).OrderBy(o => o.Order.Date));
+            View(await _orderService.GetAllOrdersAsync());
 
         [HttpGet]
         public async Task<IActionResult> Create() => await Task.Run(() => View());
@@ -41,10 +40,10 @@ namespace Pharmacy.Controllers
             return View(orderCreateViewModel);
         }
 
-        public async Task<IActionResult> GetMedicinesAsync() => Json((await _medicineService.GetAllMedicinesAsync()).Select(m => new {MedicineId = m.Id, MedicineName = m.Name}).ToList());
+        public async Task<IActionResult> GetAllMedicinesNamesAsync() => Json(await _medicineService.GetAllMedicinesNamesAsync());
 
-        public async Task<IActionResult> GetPrescriptionsForMedicineAsync(int medicineId) => Json((await _prescriptionService.GetPrescriptionsForMedicineAsync(medicineId)).Select(p => new {PrescriptionId = p.Id, PrescriptionNumber = p.PrescriptionNumber}));
+        public async Task<IActionResult> GetAllPrescriptionsNumbersForMedicineAsync(int medicineId) => Json(await _prescriptionService.GetAllPrescriptionsNumbersForMedicineAsync(medicineId));
 
         public async Task<IActionResult> GetInfoIfMedicineHasPrescriptionAsync(int medicineId) => Json((await _medicineService.GetMedicineByIdAsync(medicineId)).WithPrescription);
     }
-}
+}   
